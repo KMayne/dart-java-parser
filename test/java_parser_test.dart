@@ -1,4 +1,4 @@
-import 'package:dart_java_parser/dart_java_parser.dart';
+import 'package:java_parser/java_parser.dart';
 import 'package:test/test.dart';
 
 void main() {

@@ -1,5 +1,5 @@
 import 'package:antlr4/antlr4.dart';
-import 'package:dart_java_parser/ast/class_like_declaration.dart';
+import 'package:java_parser/ast/class_like_declaration.dart';
 
 import 'antlr/Java20Lexer.dart';
 import 'antlr/Java20Parser.dart';

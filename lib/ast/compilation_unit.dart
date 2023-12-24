@@ -1,4 +1,4 @@
-import 'package:dart_java_parser/ast/type_name.dart';
+import 'package:java_parser/ast/type_name.dart';
 
 import 'annotation.dart';
 import 'ast.dart';

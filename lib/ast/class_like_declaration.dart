@@ -1,5 +1,5 @@
-import 'package:dart_java_parser/ast/annotation.dart';
-import 'package:dart_java_parser/ast/type_name.dart';
+import 'package:java_parser/ast/annotation.dart';
+import 'package:java_parser/ast/type_name.dart';
 
 import 'ast.dart';
 

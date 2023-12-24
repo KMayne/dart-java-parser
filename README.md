@@ -1,6 +1,6 @@
 # Java Parser
 
-This is a dart application that uses Antlr to parse Java and then code to build a custom AST.
+This is a Dart application that uses Antlr to parse Java and then code to build a custom AST.
 
 The purpose of this project is to:
 * Play with the Dart language a bit
