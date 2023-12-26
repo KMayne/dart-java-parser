@@ -20,7 +20,5 @@ abstract class AstNode {
 }
 
 class TodoNode extends AstNode {
-  final String typeName;
-
-  TodoNode(this.typeName);
+  @override String? get symbolName => "TODO";
 }

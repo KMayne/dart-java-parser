@@ -2,14 +2,17 @@ import 'package:java_parser/ast/annotation.dart';
 import 'package:java_parser/ast/type_name.dart';
 
 import 'ast.dart';
+import 'class_body_declaration.dart';
 
 sealed class ClassModifierType extends AstNode {}
 
 class AnnotationClassModifier extends ClassModifierType {
   final Annotation annotation;
+
   AnnotationClassModifier(this.annotation);
 
-  @override Iterable<AstNode> get children => [annotation];
+  @override
+  Iterable<AstNode> get children => [annotation];
 }
 
 class BasicClassModifier extends ClassModifierType {
@@ -42,14 +45,10 @@ enum ClassModifier {
 }
 
 // TODO
-class TypeBound extends TodoNode {
-  TypeBound() : super("TypeBound");
-}
+class TypeBound extends TodoNode {}
 
 // TODO
-class ClassType extends TodoNode {
-  ClassType() : super("ClassType");
-}
+class ClassType extends TodoNode {}
 
 class TypeParameter extends AstNode {
   final List<Annotation> annotations;
@@ -58,8 +57,12 @@ class TypeParameter extends AstNode {
 
   TypeParameter(this.annotations, this.paramName, this.bound);
 
-  @override String get symbolName => paramName;
-  @override Iterable<AstNode> get children => [...annotations, bound].whereType<AstNode>();
+  @override
+  String get symbolName => paramName;
+
+  @override
+  Iterable<AstNode> get children =>
+      [...annotations, bound].whereType<AstNode>();
 }
 
 sealed class ClassLikeDeclaration extends AstNode {
@@ -74,18 +77,30 @@ class NormalClassDeclaration extends ClassLikeDeclaration {
   final ClassType? classExtends;
   final List<ClassType> classImplements;
   final List<TypeName> classPermits;
+  final List<ClassBodyDeclaration> declarations;
 
-  @override String get symbolName => typeName;
-  @override Iterable<AstNode> get children => [...super.children, ...modifiers, ...typeParameters, classExtends, classImplements, classPermits].whereType<AstNode>();
+  @override
+  String get symbolName => typeName;
+
+  @override
+  Iterable<AstNode> get children => [
+        ...super.children,
+        ...modifiers,
+        ...typeParameters,
+        classExtends,
+        classImplements,
+        classPermits,
+        ...declarations
+      ].whereType<AstNode>();
 
   NormalClassDeclaration(
-      List<ClassModifierType> modifiers,
-      String typeName,
+      super.modifiers,
+      super.typeName,
       this.typeParameters,
       this.classExtends,
       this.classImplements,
-      this.classPermits)
-      : super(modifiers, typeName);
+      this.classPermits,
+      this.declarations);
 }
 
 // TODO

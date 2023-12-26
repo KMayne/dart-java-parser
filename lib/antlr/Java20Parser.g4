@@ -346,11 +346,11 @@ classBodyDeclaration
     ;
 
 classMemberDeclaration
-    : fieldDeclaration
-    | methodDeclaration
-    | classDeclaration
-    | interfaceDeclaration
-    | ';'
+    : fieldDeclaration      # ClassFieldDeclaration
+    | methodDeclaration     # ClassMethodDeclaration
+    | classDeclaration      # InnerClassDeclaration
+    | interfaceDeclaration  # InnerClassDeclaration
+    | ';'                   # Semi
     ;
 
 // Paragraph 8.3
