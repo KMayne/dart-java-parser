@@ -49,9 +49,10 @@ class JavaAstBuilder extends Java20ParserBaseVisitor<AstNode> {
               .toList());
 
   @override
-  PackageDeclaration visitPackageDeclaration(PackageDeclarationContext ctx) => PackageDeclaration(
-      ctx.packageModifiers().map(visitPackageModifier).whereType<Annotation>().toList(),
-      TypeName(ctx.Identifiers().map((tn) => tn.text).whereType<String>().toList()));
+  PackageDeclaration visitPackageDeclaration(PackageDeclarationContext ctx) =>
+      PackageDeclaration(
+          ctx.packageModifiers().map(visitPackageModifier).whereType<Annotation>().toList(),
+          TypeName(ctx.Identifiers().map((tn) => tn.text).whereType<String>().toList()));
 
   @override
   Annotation? visitPackageModifier(PackageModifierContext ctx) =>
@@ -64,41 +65,53 @@ class JavaAstBuilder extends Java20ParserBaseVisitor<AstNode> {
   @override
   ImportDeclaration? visitSingleTypeImportDeclaration(SingleTypeImportDeclarationContext ctx) =>
       mapNullable(ctx.typeName(),
-          (typeName) => ImportDeclaration(visitTypeName(typeName), onDemand: false, static: false));
+              (typeName) =>
+              ImportDeclaration(visitTypeName(typeName), onDemand: false, static: false));
 
   @override
   ImportDeclaration? visitTypeImportOnDemandDeclaration(TypeImportOnDemandDeclarationContext ctx) =>
       mapNullable(
           ctx.packageOrTypeName(),
-          (typeName) => 
+              (typeName) =>
               ImportDeclaration(visitPackageOrTypeName(typeName), onDemand: true, static: false));
 
   @override
   ImportDeclaration? visitSingleStaticImportDeclaration(SingleStaticImportDeclarationContext ctx) =>
       mapNullable(ctx.typeName(),
-          (typeName) => ImportDeclaration(visitTypeName(typeName), onDemand: false, static: true));
+              (typeName) =>
+              ImportDeclaration(visitTypeName(typeName), onDemand: false, static: true));
 
   @override
   ImportDeclaration? visitStaticImportOnDemandDeclaration(
-          StaticImportOnDemandDeclarationContext ctx) =>
+      StaticImportOnDemandDeclarationContext ctx) =>
       mapNullable(ctx.typeName(),
-          (typeName) => ImportDeclaration(visitTypeName(typeName), onDemand: true, static: true));
+              (typeName) =>
+              ImportDeclaration(visitTypeName(typeName), onDemand: true, static: true));
 
   @override
   TypeName visitTypeName(TypeNameContext ctx) {
     return (mapNullable(ctx.packageName(), visitPackageName) ?? TypeName.empty())
-        .prependPart(ctx.typeIdentifier()?.Identifier()?.text);
+        .prependPart(ctx
+        .typeIdentifier()
+        ?.Identifier()
+        ?.text);
   }
 
   @override
-  TypeName visitPackageName(PackageNameContext ctx) => TypeName([
-        ctx.Identifier()?.text,
+  TypeName visitPackageName(PackageNameContext ctx) =>
+      TypeName([
+        ctx
+            .Identifier()
+            ?.text,
         ...?mapNullable(ctx.packageName(), visitPackageName)?.typeNameParts
       ].whereType<String>().toList());
 
   @override
-  TypeName visitPackageOrTypeName(PackageOrTypeNameContext ctx) => TypeName([
-        ctx.Identifier()?.text,
+  TypeName visitPackageOrTypeName(PackageOrTypeNameContext ctx) =>
+      TypeName([
+        ctx
+            .Identifier()
+            ?.text,
         mapNullable(ctx.packageOrTypeName(), visitPackageOrTypeName)
       ].whereType<String>().toList());
 
@@ -109,32 +122,29 @@ class JavaAstBuilder extends Java20ParserBaseVisitor<AstNode> {
   NormalClassDeclaration visitNormalClassDeclaration(NormalClassDeclarationContext ctx) {
     return NormalClassDeclaration(
         ctx.classModifiers().map(visitClassModifier).toList(),
-        ctx.typeIdentifier()?.text ?? "<ERROR>",
         ctx
-                .typeParameters()
-                ?.typeParameterList()
-                ?.typeParameters()
-                .map(visitTypeParameter)
-                .whereType<TypeParameter>()
-                .toList() ??
+            .typeIdentifier()
+            ?.text ?? "<ERROR>",
+        ctx
+            .typeParameters()
+            ?.typeParameterList()
+            ?.typeParameters()
+            .map(visitTypeParameter)
+            .whereType<TypeParameter>()
+            .toList() ??
             [],
         mapNullable(ctx.classExtends()?.classType(), visitClassType),
         ctx
-                .classImplements()
-                ?.interfaceTypeList()
-                ?.interfaceTypes()
-                .map((i) => mapNullable(i.classType(), visitClassType))
-                .whereType<ClassType>()
-                .toList() ??
+            .classImplements()
+            ?.interfaceTypeList()
+            ?.interfaceTypes()
+            .map((i) => mapNullable(i.classType(), visitClassType))
+            .whereType<ClassType>()
+            .toList() ??
             [],
         ctx.classPermits()?.typeNames().map(visitTypeName).toList() ?? [],
-        ctx
-                .classBody()
-                ?.classBodyDeclarations()
-                .map(visitClassBodyDeclaration)
-                .whereType<ClassBodyDeclaration>()
-                .toList() ??
-            []);
+        ctx.classBody()?.classBodyDeclarations().map(visitClassBodyDeclaration).toList()
+        as List<ClassBodyDeclaration>);
   }
 
   @override
@@ -143,29 +153,32 @@ class JavaAstBuilder extends Java20ParserBaseVisitor<AstNode> {
     return maybeAnnotation != null
         ? AnnotationClassModifier(visitAnnotation(maybeAnnotation))
         : BasicClassModifier(
-            ClassModifier.values.firstWhere((element) => ctx.text == element.name));
+        ClassModifier.values.firstWhere((element) => ctx.text == element.name));
   }
 
   @override
-  TypeParameter visitTypeParameter(TypeParameterContext ctx) => TypeParameter(
-      ctx
-          .typeParameterModifiers()
-          .map((tpm) => mapNullable(tpm.annotation(), visitAnnotation))
-          .whereType<Annotation>()
-          .toList(),
-      ctx.typeIdentifier()?.Identifier()?.text ?? "<ERROR>",
-      mapNullable(ctx.typeBound(), visitTypeBound));
+  TypeParameter visitTypeParameter(TypeParameterContext ctx) =>
+      TypeParameter(
+          ctx
+              .typeParameterModifiers()
+              .map((tpm) => mapNullable(tpm.annotation(), visitAnnotation))
+              .whereType<Annotation>()
+              .toList(),
+          ctx
+              .typeIdentifier()
+              ?.Identifier()
+              ?.text ?? "<ERROR>",
+          mapNullable(ctx.typeBound(), visitTypeBound));
 
   @override
   TypeBound visitTypeBound(TypeBoundContext ctx) => TypeBound();
 
   @override
-  FieldDeclaration visitClassFieldDeclaration(ClassFieldDeclarationContext ctx) =>
-      FieldDeclaration();
+  FieldDeclaration visitFieldDeclaration(FieldDeclarationContext ctx) {
+    if (ctx.fieldModifiers())
+  }
 
-  @override
-  MethodDeclaration visitClassMethodDeclaration(ClassMethodDeclarationContext ctx) =>
-      MethodDeclaration();
+  MethodDeclaration visitMethodDeclaration(MethodDeclarationContext ctx) => MethodDeclaration();
 
   @override
   InnerClassLikeDeclaration? visitInnerClassDeclaration(InnerClassDeclarationContext ctx) {
@@ -185,5 +198,4 @@ class JavaAstBuilder extends Java20ParserBaseVisitor<AstNode> {
       ConstructorDeclaration();
 
   @override
-  MethodDeclaration visitMethodDeclaration(MethodDeclarationContext ctx) => MethodDeclaration();
 }
