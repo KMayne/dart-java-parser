@@ -38,8 +38,7 @@ enum ClassModifier {
   final String name;
   final bool allowedOnInterface;
 
-  const ClassModifier(
-    this.name, {
+  const ClassModifier(this.name, {
     this.allowedOnInterface = true,
   });
 }
@@ -65,6 +64,8 @@ class TypeParameter extends AstNode {
       [...annotations, bound].whereType<AstNode>();
 }
 
+sealed class FieldModifier extends AstNode {}
+
 sealed class ClassLikeDeclaration extends AstNode {
   final List<ClassModifierType> modifiers;
   final String typeName;
@@ -83,7 +84,8 @@ class NormalClassDeclaration extends ClassLikeDeclaration {
   String get symbolName => typeName;
 
   @override
-  Iterable<AstNode> get children => [
+  Iterable<AstNode> get children =>
+      [
         ...super.children,
         ...modifiers,
         ...typeParameters,
@@ -93,8 +95,7 @@ class NormalClassDeclaration extends ClassLikeDeclaration {
         ...declarations
       ].whereType<AstNode>();
 
-  NormalClassDeclaration(
-      super.modifiers,
+  NormalClassDeclaration(super.modifiers,
       super.typeName,
       this.typeParameters,
       this.classExtends,
@@ -102,6 +103,7 @@ class NormalClassDeclaration extends ClassLikeDeclaration {
       this.classPermits,
       this.declarations);
 }
+
 
 // TODO
 // class EnumDeclaration extends ClassLikeDeclaration {}
