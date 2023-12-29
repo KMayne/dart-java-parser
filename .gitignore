@@ -1,7 +1,14 @@
 # https://dart.dev/guides/libraries/private-files
 # Created by `dart pub`
 .dart_tool/
+
 lib/antlr/*
 !lib/antlr/generate-parser.sh
 !lib/antlr/*.g4
 !lib/antlr/antlr*.jar
+
+# IntelliJ non-sharable files
+.idea/workspace.xml
+.idea/usage.statistics.xml
+.idea/shelf
+.idea/sonarlint
