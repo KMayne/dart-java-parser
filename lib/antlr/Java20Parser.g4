@@ -55,16 +55,16 @@ numericType
     ;
 
 integralType
-    : 'byte'
-    | 'short'
-    | 'int'
-    | 'long'
-    | 'char'
+    : 'byte'  # ByteType
+    | 'short' # ShortType
+    | 'int'   # IntType
+    | 'long'  # LongType
+    | 'char'  # CharType
     ;
 
 floatingPointType
-    : 'float'
-    | 'double'
+    : 'float'  # FloatType
+    | 'double' # DoubleType
     ;
 
 // Paragraph 4.3
@@ -155,8 +155,8 @@ typeArgumentList
     ;
 
 typeArgument
-    : referenceType
-    | wildcard
+    : referenceType # ReferenceTypeArgument
+    | wildcard      # WildcardTypeArgument
     ;
 
 wildcard
@@ -164,8 +164,8 @@ wildcard
     ;
 
 wildcardBounds
-    : 'extends' referenceType
-    | 'super' referenceType
+    : 'extends' referenceType # ExtendsWildcardBounds
+    | 'super' referenceType   # SuperWildcardBounds
     ;
 
 // Paragraph 6.5
@@ -384,8 +384,8 @@ variableDeclaratorId
     ;
 
 variableInitializer
-    : expression
-    | arrayInitializer
+    : expression        # ExpressionVariableInitializer
+    | arrayInitializer  # ArrayVariableInitializer
     ;
 
 unannType
@@ -394,8 +394,8 @@ unannType
     ;
 
 unannPrimitiveType
-    : numericType
-    | 'boolean'
+    : numericType  # PrimitiveNumericType
+    | 'boolean'    # BooleanType
     ;
 
 unannReferenceType
@@ -403,14 +403,6 @@ unannReferenceType
     | unannTypeVariable
     | unannArrayType
     ;
-
-// Replace unannClassType in unannClassOrInterfaceType
-
-// unannClassOrInterfaceType
-//         : unannClassType
-//         | unannInterfaceType
-//         ;
-//
 
 unannClassOrInterfaceType
     : (packageName '.' annotation*)? typeIdentifier typeArguments? uCOIT?
@@ -434,7 +426,9 @@ unannTypeVariable
     ;
 
 unannArrayType
-    : (unannPrimitiveType | unannClassOrInterfaceType | unannTypeVariable) dims
+    : unannPrimitiveType dims         # UnannPrimitiveArrayType
+    | unannClassOrInterfaceType dims  # UnannCoitArrayType
+    | unannTypeVariable dims          # UnannTypeVarArrayType
     ;
 
 // Paragraph 8.4

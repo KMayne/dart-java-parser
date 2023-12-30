@@ -64,8 +64,6 @@ class TypeParameter extends AstNode {
       [...annotations, bound].whereType<AstNode>();
 }
 
-sealed class FieldModifier extends AstNode {}
-
 sealed class ClassLikeDeclaration extends AstNode {
   final List<ClassModifierType> modifiers;
   final String typeName;
